@@ -57,6 +57,10 @@ app.use(express.json({
 // app.use(hpp());
 
 
+app.get("/", (req, res) => {
+    res.send("helloo");
+  });
+  
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/event', eventRoutes);
