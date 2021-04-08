@@ -7,7 +7,6 @@ const recommender = new ContentBasedRecommender({
 });
 
 exports.creatEvent = async (req, res, next) => {
-	console.log(req.body);
     try {
 		const event = await Event.create({
 			title: req.body.title,
@@ -49,7 +48,6 @@ exports.getRecommendEvent = async(req, res, next) =>{
 			$in : similarDocuments.map(sd => sd.id)
 		}});
 
-		// console.log(recommender.data);
 		res.status(201).json({
 			status: "success",
 			data: {
