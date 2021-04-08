@@ -12,7 +12,8 @@ exports.creatEvent = async (req, res, next) => {
 		const event = await Event.create({
 			title: req.body.title,
 			description: req.body.description,
-			location: req.body.location,
+			address: req.body.address,
+			city: req.body.city,
 			noOfInterest: req.body.noOfInterest,
 			coverPhoto: req.body.coverPhoto,
 			startDate: req.body.startDate,
