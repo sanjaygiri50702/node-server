@@ -6,7 +6,7 @@ exports.getAllEventCategory = base.getAll(EventCategory);
 exports.getEventCategory = base.getOne(EventCategory);
 
 // Don't update password on this 
-exports.updateEvent = base.updateOne(EventCategory);
+// exports.updateEvent = base.updateOne(EventCategory);
 exports.deleteEvent = base.deleteOne(EventCategory);
 
 exports.getEventByCategory = async(req, res, next) =>{

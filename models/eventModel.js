@@ -25,7 +25,9 @@ const eventSchema = new mongoose.Schema({
   },
   coverPhoto: {
     type: String,
-
+  },
+  isFeatured: {
+    type: Boolean,
   },
   startDateAndTime:{
     type: Date,
@@ -60,12 +62,12 @@ const eventSchema = new mongoose.Schema({
 		ref: "EventCategory"
 	}],
 
-}, { timestamps: true } );
+},
+ { timestamps: true } );
 
 eventSchema.virtual('totalInterestedUser').get(function() {
   return this.interestedUser.length;
 });
-
 
 const Event = mongoose.model("Event", eventSchema);
 module.exports = Event;

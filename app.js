@@ -1,13 +1,26 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
-const hpp = require('hpp');
+// const helmet = require('helmet');
+// const mongoSanitize = require('express-mongo-sanitize');
+// const xss = require('xss-clean');
+// const hpp = require('hpp');
+const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
-// var multer  = require('multer')
-// var upload = multer({ dest: 'uploads/' })
+const  multer  = require('multer')
+const storage = multer.diskStorage({
+	destination: (req,res,cb) =>{
+		cb(null,"./");
+	},
+	filename: function(req,file,cb){
+		const ext = file.mimetype.split("/")[1];
+		cb(null, `uploads/${file.originalname}-${Date.now()}.${ext}`);
+	}
+});
+
+const upload = multer({
+	storage: storage
+});
 
 const userRoutes = require('./routes/userRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
@@ -23,12 +36,12 @@ http.get('http://bot.whatismyipaddress.com', function(res){
         console.log("PUBLIC IP : " + chunk);
     });
 });
-console.log(process.env)
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :user-agent'));
 // Allow Cross-Origin requests
-app.use(cors({
-	origin: 'http://localhost:3001'
-}));
+// app.use(cors({
+// 	origin: 'http://localhost:3001'
+// }));
+app.use(cors());
 app.use((req, res, next) => {
 	res.set({
 		'Access-Control-Allow-Origin': '*',
@@ -46,7 +59,9 @@ const limiter = rateLimit({
 	windowMs: 60 * 60 * 1000,
 	message: 'Too Many Request from this IP, please try again in an hour'
 });
-app.use('/api', limiter);
+app.use('/', express.static(path.join(__dirname, '/')));
+
+// app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({
@@ -62,7 +77,6 @@ app.use(express.json({
 // Prevent parameter pollution
 // app.use(hpp());
 
-
 app.get("/", (req, res) => {
 	res.send("helloo");
 });
@@ -70,6 +84,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/event', eventRoutes);
+app.use('/api/upload', upload.single('coverPhoto'), eventRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/category', eventCategoryRoutes);
 

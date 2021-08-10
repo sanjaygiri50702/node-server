@@ -5,7 +5,7 @@ const authController = require('./../controllers/authController');
 
 router.use(authController.protect);
 
-router.get("/public-key", paymentController.publishableKey);
+// router.get("/", paymentController.publishableKey);
 
-router.post("/", paymentController.initializePayment);
+// router.post("/", paymentController.initializePayment);
 module.exports = router;

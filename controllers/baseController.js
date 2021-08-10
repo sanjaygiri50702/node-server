@@ -77,6 +77,7 @@ exports.getOne = Model => async (req, res, next) => {
 };
 
 exports.getAll = Model => async (req, res, next) => {
+    console.log(req.query);
     try {
         const features = new APIFeatures(Model.find(), req.query)
             .sort()
